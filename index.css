@@ -1,0 +1,67 @@
+body {
+    background-color: lightyellow;
+}
+
+nav {
+    text-align: center;
+    height: 50px;
+    background-color: lightgreen;
+    padding: 10px;
+}
+
+button {
+    height: 50px;
+    width: 60px;
+    border-radius: 5%;
+    border: 0;
+    background-color: lightyellow;
+    box-shadow: 2px 2px 5px lightgrey;
+}
+
+section {
+    height: 20px;
+    background-color: lightgreen;
+    color: white;
+    padding-left: 10px;
+}
+
+h1 {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    font-size: 100px;
+    color: rebeccapurple;
+}
+
+div {
+    height: 80px;
+    width: 80px;
+    margin: auto;
+    float: left;
+    border: 2px solid black;
+    margin: 10px;
+    border-radius: 5%;
+}
+
+main {
+    margin: 80px auto;
+    padding: 10px;
+    width: 312px;
+}
+
+div.player {
+    background-color: purple;
+}
+
+div.exit {
+    background-color: lightpink;
+}
+
+div.wall {
+    background-color: lightgrey;
+}
+
+section .executed {
+    font-weight: bold;
+}
