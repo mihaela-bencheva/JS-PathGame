@@ -65,3 +65,7 @@ div.wall {
 section .executed {
     font-weight: bold;
 }
+
+section span {
+    padding: 5px;
+}
