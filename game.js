@@ -1,6 +1,8 @@
 //global variable, that stores the program instructions
 var instructions = [];
 
+var currentInstruction = 0;
+
 var map = [
     [2, 0, 1],
     [0, 1, 1],
@@ -15,6 +17,12 @@ var map2 = [
     [0, 1, 1, 1, 0, 1],
     [0, 0, 3, 0, 0, 1]
 ];
+
+//this will be our displayed map 
+var currentLevel = map;
+renderMap(currentLevel);
+
+var player = findPlayerPosition(map);
 
 //get all the buttons instances and attach click event
 var allButtons = document.querySelectorAll("button");
@@ -90,4 +98,62 @@ function hideMessage() {
     h1.style.display = "none";
 }
 
-renderMap(map);
+function findPlayerPosition(map) {
+    for(var i = 0; i < map.length; i++) {
+        for(var j = 0; j < map[i].length; j++) {
+            if (map[i][j] === 2) {
+                return {x:j, y:i};
+            }
+        }
+    }
+}
+
+function playMove() {
+    var oldPosition = {x:player.x, y:player.y}
+    //reading the next instruction from the instruction array
+    var instruction = instructions[currentInstruction];
+    currentInstruction++;
+    console.log(instruction);
+
+    if (instruction === undefined) {
+        displayMessage("Game Over!");
+    }
+
+    //check if the move is valid
+    switch(instruction) {
+        case "Left":
+            player.x-=1;
+            break;
+        case "Right":
+            player.x+=1;
+            break;
+        case "Down":
+            player.y+=1;
+            break;
+        case "Up":
+            player.y-=1;
+            break;
+        case "Start":
+            displayMessage("Game over!");
+            break;
+    }
+
+    //update the map array
+    try { 
+        if (currentLevel[player.y][player.x] === 0) {
+            currentLevel[oldPosition.y][oldPosition.x] = 0;
+            currentLevel[player.y][player.x] = 2;
+        } else if(currentLevel[player.y][player.x] === 3) {
+            displayMessage("You Win!");
+            currentLevel[oldPosition.y][oldPosition.x] = 0;
+            currentLevel[player.y][player.x] = 2;
+        } else {
+            displayMessage("Game Over!");
+        }
+    } catch {
+        displayMessage("Game Over!");
+    }
+
+    //render the map
+    renderMap(currentLevel);
+}
