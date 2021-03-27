@@ -18,11 +18,12 @@ var map2 = [
     [0, 0, 3, 0, 0, 1]
 ];
 
-//this will be our displayed map 
-var currentLevel = map;
-renderMap(currentLevel);
+var levelArray = [map, map2];
+var player;
 
-var player = findPlayerPosition(map);
+//this will be our displayed map 
+var currentLevelIndex = 0;
+var currentLevel = initLevel(currentLevelIndex);
 
 //get all the buttons instances and attach click event
 var allButtons = document.querySelectorAll("button");
@@ -40,6 +41,10 @@ function onButtonClick(event) {
     var span = document.createElement("SPAN");
     span.innerHTML = buttonText;
     instructionSection.appendChild(span);
+
+    if (buttonText === "Start") {
+        playMove();
+    }
 }
 
 function renderMap(map) {
@@ -143,10 +148,19 @@ function playMove() {
         if (currentLevel[player.y][player.x] === 0) {
             currentLevel[oldPosition.y][oldPosition.x] = 0;
             currentLevel[player.y][player.x] = 2;
+            setTimeout(playMove, 1000);
         } else if(currentLevel[player.y][player.x] === 3) {
-            displayMessage("You Win!");
             currentLevel[oldPosition.y][oldPosition.x] = 0;
             currentLevel[player.y][player.x] = 2;
+            if (currentLevelIndex === levelArray.length - 1) {
+                displayMessage("You finished the game!");
+            } else {
+                displayMessage("You win the level! Loading next one...");
+                currentLevelIndex++;
+                setTimeout(function () {
+                    currentLevel = initLevel(currentLevelIndex);
+                }, 2000);
+            }
         } else {
             displayMessage("Game Over!");
         }
@@ -156,4 +170,16 @@ function playMove() {
 
     //render the map
     renderMap(currentLevel);
+}
+
+function initLevel(levelIndex) {
+    var level = levelArray[levelIndex];
+    renderMap(level);
+    player = findPlayerPosition(level);
+    instructions = [];
+    currentInstruction = 0;
+    var instructionSection = document.querySelector("section");
+    instructionSection.innerHTML = "";
+    hideMessage();
+    return level;
 }
