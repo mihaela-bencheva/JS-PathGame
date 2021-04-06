@@ -21,6 +21,8 @@ var map2 = [
 var levelArray = [map, map2];
 var player;
 
+var toh;
+
 //this will be our displayed map 
 var currentLevelIndex = 0;
 var currentLevel = initLevel(currentLevelIndex);
@@ -30,6 +32,10 @@ var allButtons = document.querySelectorAll("button");
 for(var i = 0; i < allButtons.length; i++) {
     allButtons[i].addEventListener("click", onButtonClick);
 }
+
+// subscribing to  the custiom event onPlayerMove
+document.addEventListener("moveMade", onPlayerMove);
+//document.addEventListener("moveMade", console.log);
 
 //button click event handler
 //add the selected instruction to instructions list
@@ -148,7 +154,13 @@ function playMove() {
         if (currentLevel[player.y][player.x] === 0) {
             currentLevel[oldPosition.y][oldPosition.x] = 0;
             currentLevel[player.y][player.x] = 2;
-            setTimeout(playMove, 1000);
+            var event = new CustomEvent("moveMade", {
+                detail: {
+                    player: player
+                }
+            });
+            toh = setTimeout(playMove, 1000);
+            document.dispatchEvent(event);
         } else if(currentLevel[player.y][player.x] === 3) {
             currentLevel[oldPosition.y][oldPosition.x] = 0;
             currentLevel[player.y][player.x] = 2;
@@ -182,4 +194,13 @@ function initLevel(levelIndex) {
     instructionSection.innerHTML = "";
     hideMessage();
     return level;
+}
+
+function onPlayerMove(e) {
+    var points = document.querySelector(".points");
+    points.innerText--;
+    if (points.innerText < 0) {
+        displayMessage("Game Over!");
+        clearTimeout(toh);
+    }
 }

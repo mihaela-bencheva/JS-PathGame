@@ -64,8 +64,17 @@ div.wall {
 
 section .executed {
     font-weight: bold;
+    color: violet;
 }
 
 section span {
     padding: 5px;
+}
+
+.points {
+    text-align: right;
+    padding: 10px;
+    color: blueviolet;
+    font-weight: bold;
+    font-size: 20px;
 }
