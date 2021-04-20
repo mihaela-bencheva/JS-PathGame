@@ -37,6 +37,7 @@ for(var i = 0; i < allButtons.length; i++) {
 document.addEventListener("moveMade", onPlayerMove);
 //document.addEventListener("moveMade", console.log);
 
+document.addEventListener('keydown', onKeyBoardClick);
 //button click event handler
 //add the selected instruction to instructions list
 //render instructions on the screen
@@ -53,6 +54,35 @@ function onButtonClick(event) {
     }
 }
 
+function onKeyBoardClick(event) {
+    switch (event.keyCode) {
+        case 39:
+            //arrow right
+            var button = document.querySelector("#right");
+            break;
+        case 37:
+            //arrow left
+            var button = document.querySelector("#left");
+            break;
+        case 38:
+            //arrow up
+            var button = document.querySelector("#up");
+            break;
+        case 40:
+            //arrow down
+            var button = document.querySelector("#down");
+            break;
+        case 13:
+            //arrow start
+            var button = document.querySelector("#start");
+            break;
+    }
+    if (button) {
+        button.click();
+    }
+    event.preventDefault();
+}
+
 function renderMap(map) {
     //calculate proper width/ height of the game field
     //Formula for the main field => (divWidth + 2*divBorder+2*divMargin)*divCount
@@ -65,7 +95,7 @@ function renderMap(map) {
     if (maxLength === 0) {
         return alert("Invalid map definition!")
     }
-    var mainWidth = (80 + 2*2 + 2*10) * maxLength;
+    var mainWidth = (30 + 2*2 + 2*5) * maxLength;
 
     const mainEl = document.querySelector('main');
     mainEl.innerHTML = "";
@@ -123,8 +153,11 @@ function playMove() {
     var oldPosition = {x:player.x, y:player.y}
     //reading the next instruction from the instruction array
     var instruction = instructions[currentInstruction];
+    var section = document.querySelector('section');
+    if (section != null) {
+        section.children[currentInstruction].setAttribute('class', 'executed');
+    }
     currentInstruction++;
-    console.log(instruction);
 
     if (instruction === undefined) {
         displayMessage("Game Over!");
@@ -159,7 +192,7 @@ function playMove() {
                     player: player
                 }
             });
-            toh = setTimeout(playMove, 1000);
+            toh = setTimeout(playMove, 300);
             document.dispatchEvent(event);
         } else if(currentLevel[player.y][player.x] === 3) {
             currentLevel[oldPosition.y][oldPosition.x] = 0;
@@ -175,9 +208,11 @@ function playMove() {
             }
         } else {
             displayMessage("Game Over!");
+            //initLevel(currentLevelIndex);
         }
     } catch {
         displayMessage("Game Over!");
+        //initLevel(currentLevelIndex);
     }
 
     //render the map

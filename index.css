@@ -36,12 +36,12 @@ h1 {
 }
 
 div {
-    height: 80px;
-    width: 80px;
+    height: 30px;
+    width: 30px;
     margin: auto;
     float: left;
     border: 2px solid black;
-    margin: 10px;
+    margin: 5px;
     border-radius: 5%;
 }
 
